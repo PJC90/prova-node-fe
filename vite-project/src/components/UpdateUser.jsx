@@ -9,47 +9,49 @@ function UpdateUser(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const getUserById = () =>{
-        fetch(`http://localhost:3008/users/${userId}`)
-        .then((res)=>{
-            if(res.ok){
-                return res.json()
-            }else{
-                throw new Error("Errore nel recuperare un utente")
-            }
-        })
-        .then((data)=>{
-            setUser(data)
-        }).catch((err)=>{
-            console.log(err)
-        })
+    const getUserById = async () =>{
+        try {
+            const res = await fetch(`http://localhost:3008/users/${userId}`)
+            
+                if(res.ok){
+                    const data = await res.json()
+                    setUser(data)
+                }else{
+                    throw new Error("Errore nel recuperare un utente")
+                }       
+        } catch (error) {
+            console.log(error)
+        }
     }
     const payload = {
         nome: nome,
         email: email,
         password: password
     }
-    const updateUser = () =>{
-        fetch(`http://localhost:3008/users/${userId}`,{
-            method: "PATCH",
-            headers:{"Content-Type": "application/json"},
-            body: JSON.stringify(payload)
-        })
-        .then((res)=>{
-            if(res.ok){
-                return res.json()
-            }else{
-                throw new Error("Errore nel modificare un utente")
-            }
-        })
-        .then((data)=>{
-            setUser(data)
-            setNome("")
-            setEmail("")
-            setPassword("")
-        }).catch((err)=>{
-            console.log(err)
-        })
+    const updateUser = async () =>{
+        try {
+            
+            const res = await fetch(`http://localhost:3008/users/${userId}`,{
+                 method: "PATCH",
+                 headers:{"Content-Type": "application/json"},
+                 body: JSON.stringify(payload)
+             })
+            
+                 if(res.ok){
+                     const data = await res.json()
+                     setUser(data)
+                     setNome("")
+                     setEmail("")
+                     setPassword("")
+                 }else{
+                     throw new Error("Errore nel modificare un utente")
+                 }
+        } catch (error) {
+            console.log(error)
+        }
+        
+        
+       
     }
 
 useEffect(()=>{

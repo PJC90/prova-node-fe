@@ -6,42 +6,39 @@ import { useNavigate } from "react-router-dom";
 function Users(){
     const [user, setUser] = useState(null)
     const navigate = useNavigate()
-    const getUsers = () =>{
-      fetch("http://localhost:3008/users")
-      .then((res)=>{
-        if(res.ok){
-          return res.json()
-        }else{
-          throw new Error("Errore nel ricevere gli utenti")
-        }
-      })
-      .then((data)=>{
-        setUser(data)
-        console.log(data)
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+
+
+    const getUsers = async () =>{
+      try {
+        const res = await fetch("http://localhost:3008/users")       
+          if(res.ok){
+            const data = await res.json()
+            setUser(data)
+            console.log(data)
+          }else{
+            throw new Error("Errore nel ricevere gli utenti")
+          }      
+      } catch (error) {
+        console.log(error)
+      }    
     }
 
-    const deleteUser = (userId) =>{
-        fetch(`http://localhost:3008/users/${userId}`,{
-            method:"DELETE",
-        })
-        .then((res)=>{
+    const deleteUser = async (userId) =>{
+      try {
+        const res = await fetch(`http://localhost:3008/users/${userId}`, {method:"DELETE"})
+
             if(res.ok){
-                console.log(res.text())
+                const message = await res.text()
+                console.log(message)
+                getUsers()
             }else{
                 throw new Error("Errore nel cancellare utente")
-            }
-        })
-        .then((data)=>{
-            console.log(data)
-            getUsers()
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
+            }      
+        
+      } catch (error) {
+        console.log(error)
+      }
+      
     }
     
     useEffect(()=>{
