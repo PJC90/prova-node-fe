@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Login(){
     const navigate = useNavigate()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const { saveToken } = useContext(AuthContext); // Usa il contesto
 
     const payload = {
         email: email,
@@ -25,6 +27,7 @@ function Login(){
                 setEmail("")
                 setPassword("")
                 localStorage.setItem("token", data.token)
+                saveToken(data.token); // Salva il token usando il contesto
                 navigate("/")
             }else{
                 throw new Error("Errore nel login")

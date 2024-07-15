@@ -1,10 +1,15 @@
+import { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 function NavCustom(){
   const navigate = useNavigate()
+  const { token, logout } = useContext(AuthContext); // Usa il contesto
+
+
     return(
         <>
          <Navbar expand="lg" className="bg-info ">
@@ -27,7 +32,12 @@ function NavCustom(){
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
+          {!token &&
             <Nav.Link  className='ms-auto text-white' onClick={()=>{navigate("/login")}}>Login</Nav.Link>
+          }
+          {token &&
+          <Nav.Link  className='ms-auto text-white' onClick={()=>{logout(); navigate("/registrazione") }}>Logout</Nav.Link>
+          }
         </Navbar.Collapse>
       </Container>
     </Navbar>
