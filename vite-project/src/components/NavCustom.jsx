@@ -2,7 +2,9 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useNavigate } from 'react-router-dom';
 function NavCustom(){
+  const navigate = useNavigate()
     return(
         <>
          <Navbar expand="lg" className="bg-info ">
@@ -25,6 +27,7 @@ function NavCustom(){
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
+            <Nav.Link  className='ms-auto text-white' onClick={()=>{navigate("/login")}}>Login</Nav.Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>
